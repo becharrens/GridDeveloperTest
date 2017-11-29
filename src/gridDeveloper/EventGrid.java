@@ -1,10 +1,10 @@
 package gridDeveloper;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Set;
 
 public class EventGrid {
 
@@ -17,16 +17,15 @@ public class EventGrid {
   // the following bounds for randomly generated values
   public static final int NUM_EVENTS = 20;
   public static final int MIN_NUM_OF_EVENTS = 3;
-  public static final int MAX_NUM_TICKETS = 5;
+  public static final int MAX_NUM_TICKETS = 10;
   public static final int MAX_TICKET_PRICE = 50;
   public static final int MIN_TICKET_PRICE = 5;
 
-  private final Set<Coordinate> coordSet = new HashSet<>();
-  private final Coordinate refCoord;
-  private PriorityQueue<Event> eventQueue;
+  private final Map<Coordinate, Event> eventMap;
 
-  public EventGrid(Coordinate refCoord) {
-    this.refCoord = refCoord;
+  public EventGrid() {
+    eventMap = new HashMap<>();
+    generateEvents();
   }
 
   /**
@@ -40,9 +39,6 @@ public class EventGrid {
 
     int numEvents = eventGenerator.nextInt(NUM_EVENTS + 1) + MIN_NUM_OF_EVENTS;
     int numTickets;
-
-    // Create the queue of events with the comparator to specify the ordering
-    eventQueue = new PriorityQueue<>(numEvents, new EventComparator(refCoord));
 
     int x;
     int y;
@@ -58,45 +54,44 @@ public class EventGrid {
       coord = new Coordinate(x, y);
 
       // Loop again if an event already exists at that location
-      if (coordSet.contains(coord)) {
+      if (eventMap.keySet().contains(coord)) {
         continue;
       }
 
       // Create the event
-      event = new Event(coord);
+      event = new Event();
       numTickets = ticketGenerator.nextInt(MAX_NUM_TICKETS + 1);
 
       // Add a random number of tickets to the event (possibly zero)
       for (int i = 0; i < numTickets; i++) {
-        price =
-            MIN_TICKET_PRICE + (ticketGenerator.nextDouble() * (MAX_TICKET_PRICE
+        price = MIN_TICKET_PRICE + (ticketGenerator.nextDouble() * (MAX_TICKET_PRICE
                 - MIN_TICKET_PRICE));
         price = ((double) Math.round(price * 100)) / 100;
         event.addTicket(price);
       }
 
       // Add the event to the queue
-      eventQueue.add(event);
+      eventMap.put(coord, event);
 
-      // Add the coordinate to the set
-      coordSet.add(coord);
       numEventsGenerated++;
     }
   }
 
   /**
-   * Print the first five closest events in the queue, which can be polled off
-   * the queue as they are sorted based on the distance to the specified
-   * coordinate through the comparator. The code assumes that it is valid to
-   * print an event which has no tickets left, assuming that the tickets have
-   * "sold out"
+   * The function prints out the five closest events to the given coordinate.
+   * It puts all the stored coordinate into a priority queue, which sorts them
+   * based on their distance to the coordinate. It then polls the first five
+   * events of the queue and prints out their associated events.
+   * Assumption: it is valid to print an event which has no tickets left,
+   * printing out that the tickets have "sold out"
    */
-  public void printClosestFiveEvents() {
-    Event event;
-    for (int i = 0; i < 5 && !eventQueue.isEmpty(); i++) {
-      event = eventQueue.poll();
-      System.out.println(
-          event.toString() + ", Distance " + event.distanceTo(refCoord));
+  public void printClosestFiveEvents(Coordinate refCoord) {
+    PriorityQueue<Coordinate> coordQueue = new PriorityQueue<>(eventMap.size(), new CoordinateComparator(refCoord));
+    coordQueue.addAll(eventMap.keySet());
+    Coordinate coord;
+    for (int i = 0; i < 5 && !coordQueue.isEmpty(); i++) {
+      coord = coordQueue.poll();
+      System.out.println(eventMap.get(coord).toString() + ", Distance " + coord.distanceTo(refCoord));
     }
   }
 
@@ -108,6 +103,9 @@ public class EventGrid {
     String splitLine[];
     boolean repeat = true;
     String errorMsg = "Invalid Input: please enter the x and y coordinates separated by commas";
+
+    // Create an event grid and generate seed data
+    EventGrid grid = new EventGrid();
 
     System.out.println("Please input Coordinates");
 
@@ -151,10 +149,7 @@ public class EventGrid {
     // Create the coordinate to look up in the grid
     Coordinate refCoord = new Coordinate(coordX, coordY);
 
-    EventGrid grid = new EventGrid(refCoord);
-
-    // Generate the events in the grid and print the five closest ones
-    grid.generateEvents();
-    grid.printClosestFiveEvents();
+    // Print the five closest events to that coordinate
+    grid.printClosestFiveEvents(refCoord);
   }
 }

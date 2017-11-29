@@ -11,13 +11,10 @@ public class Event {
   // cheapest prize
   private final PriorityQueue<Double> tickets;
   private final int id;
-  private final Coordinate site;
 
-
-  public Event(Coordinate site) {
+  public Event() {
     this.tickets = new PriorityQueue<>();
     this.id = ++numEvents;
-    this.site = site;
   }
 
   /**
@@ -40,15 +37,6 @@ public class Event {
       padding += '0';
     }
     return padding + n;
-  }
-
-  /**
-   * Calculates the distance between the event's site and the coordinate given
-   * @param coord The coordinate to calculate the distance from
-   * @return The Manhattan distance between the coordinate and the event
-   */
-  public Integer distanceTo(Coordinate coord) {
-    return site.distanceTo(coord);
   }
 
   @Override

@@ -1,4 +1,4 @@
-# Grid-Developer-Test
+# Grid Developer Test
 Used to simulate software that lists the 5 closest events to a set of coordinates input by the user.
 
 ## Assumptions

@@ -1,5 +1,3 @@
-package gridDeveloper;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -26,66 +24,6 @@ public class EventGrid {
   public EventGrid() {
     eventMap = new HashMap<>();
     generateEvents();
-  }
-
-  public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
-    int coordX = 0;
-    int coordY = 0;
-    String line;
-    String splitLine[];
-    boolean repeat = true;
-    String errorMsg = "Invalid Input: please enter the x and y coordinates "
-        + "separated by commas";
-
-    // Create an event grid and generate seed data
-    EventGrid grid = new EventGrid();
-
-    System.out.println("Please input Coordinates");
-
-    // Read the coordinate from standard input. Assumes correct input is of the
-    // form: "x, y", where x and y are two integers in the range [-10, 10]
-    do {
-      try {
-        System.out.print('>');
-        line = scanner.nextLine().replace(" ", "");
-
-        // Check the format of the input
-        splitLine = line.split(",");
-        if ((line.lastIndexOf(',') == line.length() - 1)
-            || splitLine.length > 2) {
-          System.out.println(errorMsg);
-          continue;
-        }
-        coordX = Integer.parseInt(splitLine[0]);
-        coordY = Integer.parseInt(splitLine[1]);
-
-        // Check values are in bounds
-        if (coordX > X_BOUNDS || coordX < -X_BOUNDS) {
-          System.out.println(
-              "x's value is out of bounds, please ensure that it's value lies"
-                  + " between "
-                  + X_BOUNDS + " and -" + X_BOUNDS);
-          continue;
-        } else if (coordY > Y_BOUNDS || coordY < -Y_BOUNDS) {
-          System.out.println(
-              "y's value is out of bounds, please ensure that it's value lies"
-                  + " between "
-                  + Y_BOUNDS + " and -" + Y_BOUNDS);
-          continue;
-        }
-        repeat = false;
-      } catch (Exception e) {
-        System.out.println(errorMsg);
-      }
-    } while (repeat);
-    scanner.close();
-
-    // Create the coordinate to look up in the grid
-    Coordinate refCoord = new Coordinate(coordX, coordY);
-
-    // Print the five closest events to that coordinate
-    grid.printClosestFiveEvents(refCoord);
   }
 
   /**
@@ -156,5 +94,65 @@ public class EventGrid {
       System.out.println(eventMap.get(coord).toString() + ", Distance " + coord
           .distanceTo(refCoord));
     }
+  }
+
+  public static void main(String[] args) {
+    Scanner scanner = new Scanner(System.in);
+    int coordX = 0;
+    int coordY = 0;
+    String line;
+    String splitLine[];
+    boolean repeat = true;
+    String errorMsg = "Invalid Input: please enter the x and y coordinates "
+        + "separated by commas";
+
+    // Create an event grid and generate seed data
+    EventGrid grid = new EventGrid();
+
+    System.out.println("Please input Coordinates");
+
+    // Read the coordinate from standard input. Assumes correct input is of the
+    // form: "x, y", where x and y are two integers in the range [-10, 10]
+    do {
+      try {
+        System.out.print('>');
+        line = scanner.nextLine().replace(" ", "");
+
+        // Check the format of the input
+        splitLine = line.split(",");
+        if ((line.lastIndexOf(',') == line.length() - 1)
+            || splitLine.length > 2) {
+          System.out.println(errorMsg);
+          continue;
+        }
+        coordX = Integer.parseInt(splitLine[0]);
+        coordY = Integer.parseInt(splitLine[1]);
+
+        // Check values are in bounds
+        if (coordX > X_BOUNDS || coordX < -X_BOUNDS) {
+          System.out.println(
+              "x's value is out of bounds, please ensure that it's value lies"
+                  + " between "
+                  + X_BOUNDS + " and -" + X_BOUNDS);
+          continue;
+        } else if (coordY > Y_BOUNDS || coordY < -Y_BOUNDS) {
+          System.out.println(
+              "y's value is out of bounds, please ensure that it's value lies"
+                  + " between "
+                  + Y_BOUNDS + " and -" + Y_BOUNDS);
+          continue;
+        }
+        repeat = false;
+      } catch (Exception e) {
+        System.out.println(errorMsg);
+      }
+    } while (repeat);
+    scanner.close();
+
+    // Create the coordinate to look up in the grid
+    Coordinate refCoord = new Coordinate(coordX, coordY);
+
+    // Print the five closest events to that coordinate
+    grid.printClosestFiveEvents(refCoord);
   }
 }

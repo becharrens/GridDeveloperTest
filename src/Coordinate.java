@@ -1,5 +1,3 @@
-package gridDeveloper;
-
 public class Coordinate {
 
   private final int x;

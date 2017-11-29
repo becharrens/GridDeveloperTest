@@ -1,5 +1,3 @@
-package gridDeveloper;
-
 import java.util.Comparator;
 
 public class CoordinateComparator implements Comparator<Coordinate> {

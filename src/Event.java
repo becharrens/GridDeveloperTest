@@ -1,5 +1,3 @@
-package gridDeveloper;
-
 import java.util.PriorityQueue;
 
 public class Event {

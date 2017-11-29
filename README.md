@@ -1,7 +1,7 @@
 # Grid-Developer-Test
 Used to simulate software that lists the 5 closest events to a set of coordinates input by the user.
 
-##Assumptions
+## Assumptions
 1) I made assumptions on several bounds for the random generation, specified in
 the constants in EventGrid
 2) It is valid to consider and print out events which have no tickets remaining
@@ -31,3 +31,10 @@ structure, like a binary tree, which splits the search space as you traverse it.
 Because this tree would likely take up a large amount of data, it would probably
 be stored in external memory, and small parts of it could be read in at a time
 to speed up the queries.
+
+## How to run
+The solution is written in Java, so the java need the
+1) To compile, from the project's home directory run: make
+2) cd into bin/
+3) Run: java EventGrid
+4) To remove all generated files: make clean

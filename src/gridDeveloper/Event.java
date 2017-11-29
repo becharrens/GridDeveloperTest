@@ -18,15 +18,8 @@ public class Event {
   }
 
   /**
-   * Adds a ticket prize to the queue
-   * @param ticketPrice the ticket's prize
-   */
-  public void addTicket(double ticketPrice) {
-    tickets.add(ticketPrice);
-  }
-
-  /**
    * Pads the id with zeros so that when printed, all ids have the same length
+   *
    * @return A string containing the id number padded with zeros so that it has
    * the required length, specified by the static variable
    */
@@ -39,8 +32,18 @@ public class Event {
     return padding + n;
   }
 
+  /**
+   * Adds a ticket prize to the queue
+   *
+   * @param ticketPrice the ticket's prize
+   */
+  public void addTicket(double ticketPrice) {
+    tickets.add(ticketPrice);
+  }
+
   @Override
   public String toString() {
-    return "Event " + padIdWithZeros(id) + " - " + ((tickets.size() > 0) ? ("$" + tickets.peek()) : "SOLD OUT");
+    return "Event " + padIdWithZeros(id) + " - " + ((tickets.size() > 0) ? ("$"
+        + tickets.peek()) : "SOLD OUT");
   }
 }

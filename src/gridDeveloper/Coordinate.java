@@ -12,6 +12,7 @@ public class Coordinate {
 
   /**
    * Calculates the Manhattan distance between two coordinates
+   *
    * @param coordinate the coordinate to calculate the distance from
    * @return the Manhattan distance
    */
